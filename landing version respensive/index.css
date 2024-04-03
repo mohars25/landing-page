@@ -1,0 +1,276 @@
+/* Réinitialisation CSS et styles de base */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: rgb(139, 195, 245);
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Header */
+header {
+    display: flex;
+    flex-direction: column;
+    background: radial-gradient(rgb(139, 195, 245), #1294b8);
+}
+
+nav.computer {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+nav.computer div h1 {
+    margin: 0;
+}
+
+.menuhaut {
+    display: flex;
+    list-style-type: none;
+}
+
+.menuhaut li a {
+    text-decoration: none;
+    color: white;
+    padding: 10px;
+}
+
+.reseauhaut {
+    display: flex;
+}
+
+.reseauhaut img {
+    width: 30px;
+    height: 30px;
+}
+
+/* Section Newsletter */
+.newsletter-section {
+    display: flex;
+    padding: 20px;
+    align-items: center;
+}
+
+.accueil {
+    width: 50%;
+}
+
+.titreaccueil {
+    font-size: 2em;
+    margin-bottom: 15px;
+}
+
+.texteaccueil {
+    margin-bottom: 15px;
+}
+
+.newsletter-section form {
+    display: flex;
+}
+
+.newsletter-section form input[type="email"] {
+    padding: 10px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+.newsletter-section form button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #1294b8;
+    color: white;
+}
+
+.picprincipal {
+    width: 50%;
+}
+
+.picprincipal img {
+    width: 100%;
+    height: auto;
+}
+
+/* Section Features */
+#features {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+}
+
+.featuresbox {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.featuresbox > div {
+    width: 30%;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    border-radius: 8px;
+}
+
+/* Equipe */
+.titreequipe, .titrecentreequipe {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.flex {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.image-personne {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    transition: filter 0.5s ease;
+    filter: grayscale(100%);
+}
+
+.image-personne:hover {
+    filter: grayscale(0%);
+}
+
+.logos {
+    display: none;
+}
+
+.image-container:hover .logos {
+    display: block;
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.logos img {
+    width: 30px;
+    margin-right: 5px;
+}
+
+/* Blog */
+.clients-section {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+.clients-section > div {
+    width: 30%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.picblog {
+    width: 100%;
+    height: auto;
+}
+
+/* Footer */
+footer {
+    background: radial-gradient(rgb(38, 40, 42), #000000);
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.logobas {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.logobaspic {
+    width: 5%;
+    margin: 0 10px;
+}
+
+.textlebas p {
+    margin: 10px 0;
+}
+
+.gotoTop {
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px;
+}
+
+.gotoTop a {
+    text-decoration: none;
+    color: #1294b8;
+    font-size: 2em;
+}
+
+
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = $_POST['email'];
+
+    // Vérifiez si l'adresse e-mail est valide
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo "Adresse e-mail invalide.";
+    } else {
+        $to = $email;
+        $subject = "Votre document";
+        $message = "Veuillez trouver ci-joint le document que vous avez demandé.";
+        $headers = "From: votre@adresse.com";
+
+        // Spécifiez le chemin du fichier à envoyer et le nom du fichier
+        $file = "/chemin/vers/le/document.pdf";
+        $filename = "document.pdf";
+        $filetype = filetype($file);
+        $filesize = filesize($file);
+
+        // Créez un identifiant de frontière unique
+        $boundary = md5(time());
+
+        // En-têtes pour la pièce jointe
+        $headers .= "\nMIME-Version: 1.0\n" . "Content-Type: multipart/mixed;\n" . " boundary=\"{$boundary}\"";
+
+        // Message MIME
+        $body = "--{$boundary}\n";
+        $body .= "Content-Type: text/plain; charset=ISO-8859-1\n";
+        $body .= "Content-Transfer-Encoding: 7bit\n\n";
+        $body .= $message . "\n";
+        $body .= "--{$boundary}\n";
+
+        // Préparez la pièce jointe
+        $handle = fopen($file, "rb");
+        $content = fread($handle, $filesize);
+        fclose($handle);
+        $encoded_content = chunk_split(base64_encode($content));
+
+        $body .= "Content-Type: {$filetype}; name=\"{$filename}\"\n";
+        $body .= "Content-Disposition: attachment; filename=\"{$filename}\"\n";
+        $body .= "Content-Transfer-Encoding: base64\n\n";
+        $body .= $encoded_content . "\n";
+        $body .= "--{$boundary}--";
+
+        // Envoyez l'e-mail
+        if (mail($to, $subject, $body, $headers)) {
+            echo "Document envoyé avec succès.";
+        } else {
+            echo "Erreur lors de l'envoi du document.";
+        }
+    }
+}
+?>
+
+<form method="post">
+    Adresse e-mail : <input type="email" name="email" required>
+    <input type="submit" value="Envoyer le document">
+</form>
