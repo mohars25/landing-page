@@ -12,6 +12,8 @@ formule.forEach((el) => {
   });
 });
 
+
+
 // menu burger
 document
   .querySelector(".burger-menu-button")
