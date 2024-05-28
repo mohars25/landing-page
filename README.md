@@ -1,6 +1,7 @@
 LANDING PAGE 
 
 Cette application est un exercice regroupant de nombreuses fonctionnalités telles que l'effet parallax et le modèle de tarification. 
+
 L'aspect responsive a été pris en compte et des fonctionnalités ont été mises en place pour assurer une facilité et une ergonomie d'utilisation optimales.
 
 
