@@ -6,6 +6,7 @@ Cette application est un exercice regroupant de nombreuses fonctionnalités tell
 L'aspect responsive a été pris en compte et des fonctionnalités ont été mises en place pour assurer une facilité et une ergonomie d'utilisation optimales.
 
 
+
  par exemple: Un menu burger est activé en mode mobile (responsive), offrant la possibilité de changer de thème. ... ect je vous laisse decouvrir de vous même...
 
 
